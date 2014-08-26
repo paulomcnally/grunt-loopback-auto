@@ -86,6 +86,7 @@ module.exports = function (grunt) {
         }
       }
       else {
+        count++;
         grunt.log.writeln('Model ' + model + ' excluded');
       }
     }
