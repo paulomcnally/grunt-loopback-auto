@@ -1,0 +1,27 @@
+{
+  "name": "grunt-loopback-auto",
+  "version": "0.0.1",
+  "description": "Grunt plugin for automigrate and autoupdate data sources for LoopBack",
+  "homepage": "https://github.com/paulomcnally/grunt-loopback-auto.git",
+  "repository": "https://github.com/paulomcnally/grunt-loopback-auto.git",
+  "author": {
+    "name": "Paulo McNally",
+    "email": "paulomcnally@gmail.com",
+    "url": "http://www.mcnallydevelopers.com"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "load-grunt-tasks": "~0.3.0"
+  },
+  "dependencies": {
+    "underscore": "^1.6.0"
+  }
+}
