@@ -1,6 +1,6 @@
 {
   "name": "grunt-loopback-auto",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Grunt plugin for automigrate and autoupdate data sources for LoopBack",
   "homepage": "https://github.com/paulomcnally/grunt-loopback-auto.git",
   "repository": "https://github.com/paulomcnally/grunt-loopback-auto.git",
