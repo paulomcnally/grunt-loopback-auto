@@ -21,8 +21,7 @@ module.exports = function (grunt) {
         options: {
           dataSource: 'db',
           app: './server/server',
-          config: './server/model-config',
-          method: 'migrate'
+          config: './server/model-config'
         }
       }
     }
