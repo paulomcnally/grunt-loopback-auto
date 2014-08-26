@@ -72,6 +72,10 @@ module.exports = function(grunt) {
 
 ## Release History
 
+#### 0.0.2
+
+* Fix exclude method
+
 #### 0.0.1
 
 * automigrate
