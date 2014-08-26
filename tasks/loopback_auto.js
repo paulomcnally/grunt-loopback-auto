@@ -78,12 +78,15 @@ module.exports = function (grunt) {
     // run autoupdate for each model
     for (var model in config) {
       // ignore exclude model
-      if (options.exclude.indexOf(model)) {
+      if (!_.contains(options.exclude, model)) {
         if (config[model].dataSource === options.dataSource) {
           var dataSource = app.dataSources[config[model].dataSource];
           dataSource[options.method](model, callback);
           grunt.log.writeln('Processing ' + options.method + ' ' + model);
         }
+      }
+      else {
+        grunt.log.writeln('Model ' + model + ' excluded');
       }
     }
 
