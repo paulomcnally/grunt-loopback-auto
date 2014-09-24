@@ -10,6 +10,7 @@
 
 var _ = require('underscore');
 var path = require('path');
+var colors = require('colors');
 
 module.exports = function (grunt) {
 
@@ -27,8 +28,11 @@ module.exports = function (grunt) {
       method: 'autoupdate' // or automigrate
     });
 
-    // counter
+    // counters
     var count = 0;
+    var countIgnored = 0;
+    var countExcluded = 0;
+    var countProcessed = 0;
 
     // check if application exist
     if (!grunt.file.exists(options.app + '.js')) {
@@ -47,8 +51,34 @@ module.exports = function (grunt) {
       if (err) {
         grunt.log.warn(err);
       }
+      goToNext();
+    }
+
+    // sum counter based type
+    function logEvent(type) {
+      switch(type) {
+        case 'ignored':
+          countIgnored++;
+        break;
+        case 'excluded':
+          countExcluded++
+        break;
+        case 'ok':
+          countProcessed++;
+        break;
+      }
+    }
+
+    /**
+     * Check if all models has been processed
+     */
+    function goToNext() {
       count++;
       if (count === _.size(config)) {
+        grunt.log.writeln(''); // line break
+        grunt.log.ok('Ignored: %d', countIgnored);
+        grunt.log.ok('Excluded: %d', countExcluded);
+        grunt.log.ok('Processed: %d', countProcessed);
         done();
       }
     }
@@ -75,19 +105,33 @@ module.exports = function (grunt) {
       grunt.fail.warn(err);
     }
 
-    // run autoupdate for each model
+    // Show Datasource
+    grunt.log.ok('DataSource: %s', colors.blue(options.dataSource));
+
+    // line break
+    grunt.log.writeln('');
+
+    // run autoupdate/automigrate for each model
     for (var model in config) {
       // ignore exclude model
       if (!_.contains(options.exclude, model)) {
         if (config[model].dataSource === options.dataSource) {
           var dataSource = app.dataSources[config[model].dataSource];
+          // execute command
+          logEvent('ok');
+          grunt.log.writeln(model + ' ' + colors.green(options.method));
           dataSource[options.method](model, callback);
-          grunt.log.writeln('Processing ' + options.method + ' ' + model);
+        }
+        else {
+          logEvent('ignored');
+          grunt.log.writeln(model + ' ' + colors.grey('ignored') + ' -> DataSource: ' + colors.blue(config[model].dataSource));
+          goToNext();
         }
       }
       else {
-        count++;
-        grunt.log.writeln('Model ' + model + ' excluded');
+        logEvent('excluded');
+        grunt.log.writeln(model + ' ' + colors.yellow('excluded'));
+        goToNext();
       }
     }
 
