@@ -72,6 +72,10 @@ module.exports = function(grunt) {
 
 ## Release History
 
+#### 0.0.4
+
+* Fix call done()
+
 #### 0.0.3
 
 * Fix autoincrement counter
