@@ -18,6 +18,7 @@ module.exports = function(grunt) {
   // creation: http://gruntjs.com/creating-tasks
 
   grunt.registerMultiTask('loopback_auto', 'Grunt plugin for automigrate and autoupdate data sources for LoopBack', function () {
+    process.env.LOOPBACK_AUTO = true;
     var done = this.async();
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
