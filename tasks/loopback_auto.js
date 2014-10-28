@@ -12,7 +12,7 @@ var _ = require('underscore');
 var path = require('path');
 var colors = require('colors');
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
 
     // sum counter based type
     function logEvent(type) {
-      switch(type) {
+      switch (type) {
         case 'ignored':
           countIgnored++;
         break;
