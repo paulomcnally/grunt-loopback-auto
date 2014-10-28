@@ -34,7 +34,7 @@ In your project's Gruntfile, add a section named `loopback_auto` to the data obj
   dataSource: 'db', // data source name
   app: './server/server', // path to the application
   config: './server/model-config', // path to the model-config file
-  exclude: [], // exclude models ['Users', 'Roles']
+  exclude: [], // exclude models ['Custom', 'Other']
   method: 'autoupdate' // or automigrate
 }
 ```
@@ -70,24 +70,13 @@ module.exports = function(grunt) {
 
 ```
 
-## Release History
+## Feature
 
-#### 0.0.4
-
-* Fix call done()
-
-#### 0.0.3
-
-* Fix autoincrement counter
-
-#### 0.0.2
-
-* Fix exclude method
-
-#### 0.0.1
-
-* automigrate
-* autoupdate
+* automigrate ✓
+* autoupdate ✓
+* autoimport ✗
+* autobackup ✗
+* autorestore ✗
 
 ## License
 Copyright (c) 2014 Paulo McNally. Licensed under the MIT license.
