@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 
 ```
 
-## Feature
+## Features
 
 * automigrate ✓
 * autoupdate ✓
