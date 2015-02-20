@@ -12,7 +12,7 @@ var _ = require('underscore');
 var path = require('path');
 var colors = require('colors');
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
@@ -24,7 +24,6 @@ module.exports = function(grunt) {
     var options = this.options({
       dataSource: 'db',
       app: './server/server',
-      config: './server/model-config',
       exclude: [],
       method: 'autoupdate' // or automigrate
     });
@@ -38,12 +37,6 @@ module.exports = function(grunt) {
     // check if application exist
     if (!grunt.file.exists(options.app + '.js')) {
       grunt.fail.warn(options.app + ' dont exist.');
-    }
-
-    // check if model-config exist
-    if (!grunt.file.exists(options.config + '.json')) {
-      grunt.fail.warn(options.config + ' dont exist.');
-      return false;
     }
 
     // solved: Don't make functions within a loop
@@ -60,13 +53,13 @@ module.exports = function(grunt) {
       switch (type) {
         case 'ignored':
           countIgnored++;
-        break;
+          break;
         case 'excluded':
           countExcluded++
-        break;
+          break;
         case 'ok':
           countProcessed++;
-        break;
+          break;
       }
     }
 
@@ -75,7 +68,7 @@ module.exports = function(grunt) {
      */
     function goToNext() {
       count++;
-      if (count === _.size(config)) {
+      if (count === _.size(models)) {
         grunt.log.writeln(''); // line break
         grunt.log.ok('Ignored: %d', countIgnored);
         grunt.log.ok('Excluded: %d', countExcluded);
@@ -95,47 +88,32 @@ module.exports = function(grunt) {
       grunt.fail.warn(err);
     }
 
-    // load configuration file
-    var config;
-    try {
-      config = require(path.resolve(options.config));
-      grunt.log.ok('Loaded models configuration %j', options.config);
-    } catch (e) {
-      var err = new Error('Cannot load models configuration ' + options.config);
-      err.origError = e;
-      grunt.fail.warn(err);
-    }
+    var ds = app.dataSources[options.dataSource];
+    ds.setMaxListeners(100); //squash warning, not sure if this is harmful
 
     // Show Datasource
-    grunt.log.ok('DataSource: %s', colors.blue(options.dataSource));
+    grunt.log.ok('DataSource: %s', colors.blue(ds.name));
 
     // line break
     grunt.log.writeln('');
 
-    // run autoupdate/automigrate for each model
-    for (var model in config) {
-      // ignore exclude model
-      if (!_.contains(options.exclude, model)) {
-        if (config[model].dataSource === options.dataSource) {
-          var dataSource = app.dataSources[config[model].dataSource];
-          // execute command
-          logEvent('ok');
-          grunt.log.writeln(model + ' ' + colors.green(options.method));
-          dataSource[options.method](model, callback);
-        }
-        else {
-          logEvent('ignored');
-          grunt.log.writeln(model + ' ' + colors.grey('ignored') + ' -> DataSource: ' + colors.blue(config[model].dataSource));
-          goToNext();
-        }
+    //collect models for data source.
+    var models = _.select(ds.modelBuilder.models, function (m) {
+      return (m.dataSource === ds);
+    });
+
+    _.each(models, function (m, idx, list) {
+      if (_.contains(options.exclude, m.modelName)) {
+        logEvent('ignored');
+        grunt.log.writeln('Ignored ' + colors.grey(m.modelName));
       }
       else {
-        logEvent('excluded');
-        grunt.log.writeln(model + ' ' + colors.yellow('excluded'));
-        goToNext();
+        logEvent('ok');
+
+        grunt.log.writeln(options.method + ' applied to' + ' ' + colors.green(m.modelName));
+        ds[options.method](m.modelName, callback);
       }
-    }
-
+    });
   });
-
 };
+
