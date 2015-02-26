@@ -12,7 +12,7 @@ var _ = require('underscore');
 var path = require('path');
 var colors = require('colors');
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
@@ -98,20 +98,20 @@ module.exports = function (grunt) {
     grunt.log.writeln('');
 
     //collect models for data source.
-    var models = _.select(ds.modelBuilder.models, function (m) {
-      return (m.dataSource === ds);
+    var models = _.select(ds.modelBuilder.models, function(model) {
+      return (model.dataSource === ds);
     });
 
-    _.each(models, function (m, idx, list) {
-      if (_.contains(options.exclude, m.modelName)) {
+    models.forEach(function(model, idx, list) {
+      if (_.contains(options.exclude, model.modelName)) {
         logEvent('ignored');
-        grunt.log.writeln('Ignored ' + colors.grey(m.modelName));
+        grunt.log.writeln('Ignored ' + colors.grey(model.modelName));
       }
       else {
         logEvent('ok');
 
-        grunt.log.writeln(options.method + ' applied to' + ' ' + colors.green(m.modelName));
-        ds[options.method](m.modelName, callback);
+        grunt.log.writeln(options.method + ' applied to' + ' ' + colors.green(model.modelName));
+        ds[options.method](model.modelName, callback);
       }
     });
   });
