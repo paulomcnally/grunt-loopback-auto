@@ -77,6 +77,10 @@ module.exports = function(grunt) {
       }
     }
 
+    // indicate to server that it is being loaded for schema gen
+    // handy to be able to skip boot scripts, etc
+    process.env.SCHEMA_GEN = true;
+    
     // load application
     var app;
     try {
