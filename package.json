@@ -18,11 +18,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "load-grunt-tasks": "~0.3.0"
+    "grunt": "^1.0.2",
+    "load-grunt-tasks": "^3.5.2"
   },
   "dependencies": {
-    "colors": "~0.6.2",
-    "underscore": "~1.6.0"
+    "colors": "^1.2.1",
+    "underscore": "^1.9.0"
   }
 }
